@@ -14,4 +14,4 @@ gameState = 'start'
 player_point = [0, 0]
 #0 - player 1 turn no selection: 1- player 1 turn square selected: 2- player 2 turn no selection: 3- player 2 turn selected square
 turn_step = 0
-piece = pygame.transform.scale(pygame.image.load('assets/rock.png'), (80,80))
+#piece = pygame.transform.scale(pygame.image.load('assets/rock.png'), (80,80))

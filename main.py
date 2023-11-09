@@ -19,7 +19,7 @@ def text_render():
     else:
         screen.blit(big_font.render(status_text[turn_step], True, 'white'), ((WIDTH - big_font.size(status_text[turn_step])[0]) / 2, 50))
     if gameState == 'end':
-        winner = 1 if player_point[0] > player_point [1] else 0
+        winner = 1 if player_point[0] > player_point [1] else 2
         text_1 = 'Congrats, player ' + str(winner) + ' has won the game!'
         text_2 = 'Press enter or return to play again'
         screen.blit(big_font.render(text_1,  True, 'white'), ((WIDTH - big_font.size(text_1)[0]) / 2, 50))
@@ -128,7 +128,7 @@ while run:
             
             turn_step = (turn_step + 1) % 4
             board.selection = 100
-        if board.table[0] == [0,0] and board.table[1] == [0, 0]:
+        if board.table[0] == [0,0] and board.table[6] == [0, 0]:
             player_point[0] += sum(board.table[i][0] for i in range(1, 6))
             player_point[1] += sum(board.table[i][0] for i in range(7, 12))
             gameState = 'end'
