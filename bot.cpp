@@ -92,7 +92,7 @@ public:
 		else
 		{
 			for (int cell = 7; cell < 12; cell++)
-			if (state[cell][0] > 0) 
+			if (state[cell][0]) 
 			{
 				res.push_back(Move{cell, 0});
 				res.push_back(Move{cell, 1});
@@ -105,8 +105,8 @@ public:
 	{
 		if (state[0] == ar<int, 2>{0, 0} && state[6] == ar<int, 2>{0, 0}) 
 		{
-			for (int cell = 1; cell < 6; cell++) P1points += state[cell][0];
-			for (int cell = 7; cell < 12; cell++) P2points += state[cell][0];
+			for (int cell = 1; cell < 6; cell++) P1points += state[cell][0], state[cell][0] = 0;
+			for (int cell = 7; cell < 12; cell++) P2points += state[cell][0], state[cell][0] = 0;
 			if (P1points > P2points) return 1; // player 1 wins
 			else if (P1points < P2points) return 2; // player 2 wins
 			else return 3; // draw
@@ -133,7 +133,7 @@ public:
 			int next_cell = move.next_move().cell;
 			if (state[next_cell][0] != 0) // if next cell has dan
 			{
-				if (next_cell % 6 == 0) return; // if next cell is quan cell
+				if (next_cell % 6 == 0) break; // if next cell is quan cell
 				num_rocks = state[next_cell][0];
 				state[next_cell][0] = 0;
 				move = move.next_move();
@@ -151,9 +151,7 @@ public:
 			}
 		}
 
-		// cout << turn << '\n';
 		turn ^= 1;
-		// cout << turn << '\n';
 		if (!this->check_ending()) this->check_borrow();
 	}
 
@@ -166,6 +164,8 @@ public:
 	    printf("|  |%2i|%2i|%2i|%2i|%2i|  |\n", state[1][0], state[2][0], state[3][0], state[4][0], state[5][0]);
 	    printf("+--+--------------+--+\n");
 	    printf("  0  1  2  3  4  5\n");
+	    cout << "P1: " << P1points << "		P2: " << P2points << '\n'; 
+
 	}
 };
 
@@ -231,7 +231,7 @@ public:
     }
 
 private:
-	const int MAX_DEPTH = 7;
+	const int MAX_DEPTH = 9;
 
 	int ultility(Game& game, int isEnd)
 	{

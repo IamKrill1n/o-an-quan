@@ -38,7 +38,7 @@ def get_nxt(i, direction):
 
 def update(direction, player): #ccw 0, cw 1
     temp, board.table[board.selection][0] = board.table[board.selection][0], 0
-    print(board.table[board.selection][0], board.selection, temp)
+    # print(board.table[board.selection][0], board.selection, temp)
     pygame.time.wait(500)
     update_board()
     while(temp != 0):
