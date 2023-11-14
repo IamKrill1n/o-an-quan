@@ -11,6 +11,5 @@ screen_color = (0, 0, 0)
 #gameState = 'start'
 # game variables and images
 delay = 400
-player_point = [0, 0]
 #0 - player 1 turn no selection: 1- player 1 turn square selected: 2- player 2 turn no selection: 3- player 2 turn selected square
 piece = pygame.transform.scale(pygame.image.load('assets/rock.png'), (80,80))

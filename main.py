@@ -9,7 +9,7 @@ gameState = 'start'
 playState = Game()
 pygame.display.set_caption('oanquantet')
 #main game loop
-#ccw 0, cw 1
+#ccw 1, cw 0
    
 run = True
 while run:
@@ -23,7 +23,6 @@ while run:
         if event.type == pygame.KEYDOWN and (event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER):
             if gameState == 'end':
                 playState = Game()
-                player_point = [0, 0]
                 gameState = 'start'
         if gameState == 'end': 
             continue
