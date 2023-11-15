@@ -223,10 +223,10 @@ public:
             int moveValue = minimax(tempGame, 0, cur_turn, -INF, INF);
 
             if (optimize(bestValue, moveValue, cur_turn ^ 1)) bestMove = move;
-            cout << moveValue << ' ' << bestValue << '\n';
+            // cout << moveValue << ' ' << bestValue << '\n';
             // move.print();
         }
-        bestMove.print();
+        // bestMove.print();
         return bestMove;
     }
 
@@ -315,10 +315,10 @@ int main(int argc, char* argv[])
 		else P2points = stoi(argv[i]);
 	}
     Game game(turn, state, P1points, P2points);
-    Player p1;
+    // Player p1;
     MinimaxStrategy minimax(&game);
     minimax.calculate_move().print();
-    p1.set_strategy(&minimax);
+    // p1.set_strategy(&minimax);
 
 
     // Player p2;
