@@ -28,13 +28,13 @@ public:
 	int P1points;
 	int P2points;
 	const int quanValue = 5;
-	Game()
+	Game(int turn_, vector<ar<int, 2> > state_, int P1points_, int P2points_)
 	{
-		turn = 0;
+		turn = turn_;
 		// state = {{0, 1}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {0, 1}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {5, 0}};
-		state = {{7, 0}, {1, 0}, {2, 0}, {0, 0}, {7, 0}, {0, 0}, {4, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}};
-		P1points = 0;
-		P2points = 0;	
+		state = state_; // {{7, 0}, {1, 0}, {2, 0}, {0, 0}, {7, 0}, {0, 0}, {4, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}};
+		P1points = P1points_;
+		P2points = P2points_;	
 		/*
 			11	10	9	8	7
 		0						6
@@ -223,7 +223,7 @@ public:
             int moveValue = minimax(tempGame, 0, cur_turn, -INF, INF);
 
             if (optimize(bestValue, moveValue, cur_turn ^ 1)) bestMove = move;
-            // cout << moveValue << ' ' << bestValue << '\n';
+            cout << moveValue << ' ' << bestValue << '\n';
             // move.print();
         }
         bestMove.print();
@@ -231,7 +231,7 @@ public:
     }
 
 private:
-	const int MAX_DEPTH = 9;
+	const int MAX_DEPTH = 4;
 
 	int ultility(Game& game, int isEnd)
 	{
@@ -303,26 +303,38 @@ public:
     }
 };
 
-int main()
+int main(int argc, char* argv[])
 {    
-    Game game;
+	vector<ar<int, 2> > state(12);
+	int turn, P1points, P2points;
+	turn = stoi(argv[1]);
+	for (int i = 2; i < argc; i++)
+	{
+		if (i <= 25) state[i / 2 - 1][i & 1] = stoi(argv[i]);
+		else if (i == 26) P1points = stoi(argv[i]);
+		else P2points = stoi(argv[i]);
+	}
+    Game game(turn, state, P1points, P2points);
     Player p1;
     MinimaxStrategy minimax(&game);
+    minimax.calculate_move().print();
     p1.set_strategy(&minimax);
-    Player p2;
-    p2.set_strategy(&minimax);
-    while(!game.check_ending())
-    {
-    	// game.check_borrow(game.turn);
-    	game.print_table();
-    	if (game.turn == 0) p1.play();
-    	else p2.play();
-    	// cout << game.turn << '\n';
-    }
-    game.print_table();
-    int v = game.check_ending();
-    if (v == 1) cout << "P1 wins";
-    else if (v == 2) cout << "p2 wins";
-    else if (v == 3) cout << "draw";
+
+
+    // Player p2;
+    // p2.set_strategy(&minimax);
+    // while(!game.check_ending())
+    // {
+    // 	// game.check_borrow(game.turn);
+    // 	game.print_table();
+    // 	if (game.turn == 0) p1.play();
+    // 	else p2.play();
+    // 	// cout << game.turn << '\n';
+    // }
+    // game.print_table();
+    // int v = game.check_ending();
+    // if (v == 1) cout << "P1 wins";
+    // else if (v == 2) cout << "p2 wins";
+    // else if (v == 3) cout << "draw";
     return 0;
 }
