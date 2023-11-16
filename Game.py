@@ -1,4 +1,7 @@
 from Table import *
+from subprocess import Popen, PIPE
+
+
 def get_coord(x, y):
     sol = (y - (HEIGHT/2 - 100)) // 100 * 5
     if sol == 0: #player 2's side
@@ -10,7 +13,7 @@ class Game:
     def __init__(self):
         self.table = Table()
         self.turn_step = 0
-        self.selection = -1
+        self.AI_move = None
 
     def EndGameText(self):
         screen.fill('black')
@@ -45,9 +48,8 @@ class Game:
             if (self.turn_step <= 1 and 0 < cur < 6) or (self.turn_step > 1 and 6 < cur < 12):
                 self.table.selection, self.table.picking = cur, cur
                 self.turn_step = 1 if self.turn_step <= 1 else 3
-                self.selection = cur
 
-    def play(self, event): #find direction and play
+    def play(self, cell, event): #find direction and play
         if self.turn_step == 1 or self.turn_step == 3:
             playerID = self.turn_step//2
             #1 is ccw, 0 is cw
@@ -55,8 +57,7 @@ class Game:
             #for player 2, going left is ccw, right is cw   
             direction = (playerID + (event == pygame.K_RIGHT)) % 2
             self.turn_step = (self.turn_step + 1) % 4
-            self.table.update(playerID, direction)
-            self.selection = -1
+            self.table.update(playerID, cell, direction)
 
     def fix_empty_rows(self):
         if self.turn_step == 0 and self.table.empty_rows[0]:
@@ -68,5 +69,18 @@ class Game:
         if self.table.table[0] == [0,0] and self.table.table[6] == [0,0]:
             self.table.player_point[0] += sum(self.table.table[i][0] for i in range(1, 6))
             self.table.player_point[1] += sum(self.table.table[i][0] for i in range(7, 12))
+            for i in range(12):
+                self.table.table[i] = [0, 0]
             return True
         return False
+
+    def make_AI_move(self): #print cell and direction
+        
+        program_path = "bot.exe"
+        p = Popen([program_path], stdout=PIPE, stdin=PIPE, stderr=PIPE)
+        data_to_write = str(self.turn_step//2) + ' ' + (' '.join(' '.join(str(self.table.table[i][j]) for j in range(2)) for i in range(12)) + ' ' + str(self.table.player_point[0]) + ' ' + str(self.table.player_point[1]))
+        stdout_data = p.communicate(input=data_to_write.encode())[0].decode()
+        AI_move = list(map(int, stdout_data.split()))
+        print(AI_move)
+        self.table.update(self.turn_step//2, AI_move[0], AI_move[1])
+        self.turn_step = (self.turn_step + 2) % 4

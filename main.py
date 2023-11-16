@@ -2,13 +2,12 @@ import pygame
 import sys 
 from variables import *
 from Game import Game
-import math
 pygame.init()
 gameState = 'start'
-###MORE PIECES ? TAKE CARE LATER.
+AI_turn = 1
+
 playState = Game()
 pygame.display.set_caption('oanquantet')
-#main game loop
 #ccw 1, cw 0
    
 run = True
@@ -27,11 +26,15 @@ while run:
         if gameState == 'end': 
             continue
         playState.fix_empty_rows()
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: #check left mouse click
-            playState.check_valid_move(event)
-        
-        if event.type == pygame.KEYDOWN and playState.selection != -1 and (event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT):  
-            playState.play(event.key)
+        if AI_turn and playState.turn_step == 2:
+            playState.make_AI_move()
+
+        else:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: #check left mouse click
+                playState.check_valid_move(event)
+            
+            if event.type == pygame.KEYDOWN and playState.table.selection != -1 and (event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT):  
+                playState.play(playState.table.selection, event.key)
         playState.render()
     
     if playState.game_over():

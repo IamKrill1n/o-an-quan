@@ -52,7 +52,8 @@ class Table:
         screen.blit(font.render((str(self.table[6])), True, 'white'), (WIDTH - 175 , HEIGHT / 2 - 15))
         pygame.display.update(pygame.Rect(100, HEIGHT/2 - 100, WIDTH, 200))
 
-    def update(self, player, direction): #ccw 1, cw 0
+    def update(self, player, cell, direction): #ccw 1, cw 0
+        self.selection, self.picking = cell, cell
         quan, self.table[self.selection][0] = self.table[self.selection][0], 0
         pygame.time.wait(delay)
         self.render()
@@ -100,5 +101,7 @@ class Table:
         self.picking = -1
         self.empty_rows[playerID] = 0
     #def move(self, playerID, direction):
+
+    
 
         
