@@ -13,12 +13,15 @@ public:
         int bestValue = (game->turn == 0) ? -INF : INF; 
         int alpha = -INF, beta = INF;
         // cout << "CALCULATION: \n";
+        // cout << "bestValue = " << bestValue << '\n';
         int isMaximizingPlayer = !(game->turn);
         for (Move move : game->possible_move()) 
         {
             Game tempGame = *game;
             tempGame.make_move(move);
-            int moveValue = minimax(tempGame, 0, !isMaximizingPlayer, alpha, beta);
+            // move.print();
+            int moveValue = minimax(tempGame, 1, !isMaximizingPlayer, alpha, beta);
+            // cout << moveValue << ' ' << isMaximizingPlayer << '\n';
             if (optimize(bestValue, moveValue, isMaximizingPlayer)) bestMove = move;
             if (isMaximizingPlayer) alpha = max(alpha, moveValue);
             else beta = min(beta, moveValue);
@@ -49,7 +52,7 @@ private:
 		return game.P1points - game.P2points;
 	}
 
-    int minimax(Game& game, int depth, bool isMaximizingPlayer, int& alpha, int& beta)
+    int minimax(Game& game, int depth, bool isMaximizingPlayer, int alpha, int beta)
     {
     	int isEnd = game.check_ending();
         if (isEnd || depth == MAX_DEPTH) return ultility(game, isEnd);

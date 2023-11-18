@@ -10,13 +10,14 @@ int main()
 
 	// Game game(0, {{0, 1}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {0, 1}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {5, 0}}, 0, 0);
     Game game(turn, state, P1points, P2points);
-    MinimaxStrategy minimax9(&game, 9);
-    minimax.calculate_move().print();
-    
+    MinimaxStrategy minimax10(&game, 10);
+    minimax10.calculate_move().print();
+
+    // 1 7 0 0 0 0 0 1 0 0 0 0 0 3 0 0 0 0 0 1 0 0 0 0 0 0 3
     // Player p1;
-    // p1.set_strategy(&minimax1);
+    // p1.set_strategy(&minimax10);
     // Player p2;
-    // p2.set_strategy(&minimax1);
+    // p2.set_strategy(&minimax10);
 
     // int num_turn = 1;
     // while(!game.check_ending())
