@@ -1,5 +1,5 @@
 #include "minimax.cpp"
-
+#include "expectimax.cpp"
 int main()
 {    
 	vector<ar<int, 2> > state(12);
@@ -10,8 +10,8 @@ int main()
 
 	// Game game(0, {{0, 1}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {0, 1}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {5, 0}}, 0, 0);
     Game game(turn, state, P1points, P2points);
-    MinimaxStrategy minimax10(&game, 10);
-    minimax10.calculate_move().print();
+    ExpectimaxStrategy expectimax(&game, 5);
+    expectimax.calculate_move().print();
 
     // 1 7 0 0 0 0 0 1 0 0 0 0 0 3 0 0 0 0 0 1 0 0 0 0 0 0 3
     // Player p1;

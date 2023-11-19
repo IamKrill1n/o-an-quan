@@ -1,11 +1,13 @@
+#ifndef MINIMAX_CPP
+#define MINIMAX_CPP
+
 #include "game.cpp"
 
 class MinimaxStrategy : public Strategy {
 public:
 	const int INF = 7777;
-	vector<Move> bestLine;
-	int MAX_DEPTH;
-    MinimaxStrategy(Game* game, int MAX_DEPTH) : Strategy(game), MAX_DEPTH(MAX_DEPTH) {}
+	int maxDepth;
+    MinimaxStrategy(Game* game, int maxDepth) : Strategy(game), maxDepth(maxDepth) {}
 
     Move calculate_move() override 
     {
@@ -33,8 +35,6 @@ public:
     }
 
 private:
-	int num_state = 0;
-	map<int, Move> track;
 	bool optimize(int& best, int value, bool isMaximizingPlayer)
     {
     	if (isMaximizingPlayer) // if maximize player
@@ -55,10 +55,10 @@ private:
     int minimax(Game& game, int depth, bool isMaximizingPlayer, int alpha, int beta)
     {
     	int isEnd = game.check_ending();
-        if (isEnd || depth == MAX_DEPTH) return ultility(game, isEnd);
+        if (isEnd || depth == maxDepth) return ultility(game, isEnd);
              
         int bestValue = isMaximizingPlayer ? -INF : INF;  
-        Move bestMove = {-1, -1};
+        // Move bestMove = {-1, -1};
         
         for (Move move : game.possible_move()) 
        	{
@@ -69,7 +69,7 @@ private:
             // tempGame.print_table();
             int moveValue = minimax(tempGame, depth + 1, !isMaximizingPlayer, alpha, beta);
             // cout << moveValue << endl;
-            if (optimize(bestValue, moveValue, isMaximizingPlayer)) bestMove = move;
+            optimize(bestValue, moveValue, isMaximizingPlayer);
             
             if (isMaximizingPlayer) alpha = max(alpha, bestValue);
             else beta = min(beta, bestValue);
@@ -79,3 +79,5 @@ private:
         return bestValue;
     }
 };
+
+#endif

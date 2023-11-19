@@ -1,9 +1,13 @@
+#ifndef GAME_CPP
+#define GAME_CPP
+
 #include<bits/stdc++.h>
 using namespace std;
 #define db double
 #define ar array
 #define all(x) x.begin(), x.end()
 #define sz(x) (int)x.size()
+
 struct Move {
 	int cell;
 	int direction; // 0 cw, 1 ccw
@@ -17,6 +21,7 @@ struct Move {
 		cout << cell << ' ' << direction << '\n';
 	}
 };
+
 class Game {
 public:
 	int turn;
@@ -190,3 +195,5 @@ public:
         strategy->execute_move();
     }
 };
+
+#endif
