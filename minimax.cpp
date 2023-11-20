@@ -29,8 +29,8 @@ public:
             else beta = min(beta, moveValue);
             if (beta <= alpha) break;
         }
-        // cout << "MOVE PLAYED: ";
-    	// bestMove.print();
+        cout << "MOVE PLAYED: ";
+    	bestMove.print();
         return bestMove;
     }
 

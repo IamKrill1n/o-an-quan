@@ -165,7 +165,6 @@ public:
 	    printf("+--+--------------+--+\n");
 	    printf("  0  1  2  3  4  5\n");
 	    cout << "P1: " << P1points << "		P2: " << P2points << '\n'; 
-
 	}
 };
 

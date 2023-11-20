@@ -13,20 +13,20 @@ public:
     {
         Move bestMove = {-1, -1};
         int bestValue = (game->turn == 0) ? -INF : INF; 
-        // cout << "CALCULATION: \n";
-        // cout << "bestValue = " << bestValue << '\n';
+        cout << "CALCULATION: \n";
+        cout << "bestValue = " << bestValue << '\n';
         int isMaximizingPlayer = !(game->turn);
         for (Move move : game->possible_move()) 
         {
             Game tempGame = *game;
             tempGame.make_move(move);
-            // move.print();
+            move.print();
             int moveValue = expectimax(tempGame, 1, !isMaximizingPlayer, game->turn);
-            // cout << moveValue << ' ' << isMaximizingPlayer << '\n';
+            cout << moveValue << '\n';
             if (optimize(bestValue, moveValue, isMaximizingPlayer)) bestMove = move;
         }
-        // cout << "MOVE PLAYED: ";
-    	// bestMove.print();
+        cout << "MOVE PLAYED: ";
+    	bestMove.print();
         return bestMove;
     }
 
@@ -84,6 +84,7 @@ private:
 
         		avgValue += moveValue;
         	}
+
         	avgValue /= sz(possibleMove);
 
         	return avgValue;
