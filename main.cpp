@@ -1,5 +1,5 @@
 #include "minimax.cpp"
-#include "expectimax.cpp"
+#include "expectiminimax.cpp"
 #include "human.cpp"
 
 int main()
