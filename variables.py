@@ -6,7 +6,7 @@ screen = pygame.display.set_mode([WIDTH, HEIGHT])
 font = pygame.font.Font('DTM-Sans.ttf', 30)
 big_font = pygame.font.Font('DTM-Sans.ttf', 50)
 timer = pygame.time.Clock()
-fps = 60
+fps = 120
 screen_color = (0, 0, 0)
 #gameState = 'start'
 # game variables and images

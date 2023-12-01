@@ -13,6 +13,8 @@ pygame.display.set_caption('oanquantet')
 run = True
 while run:
     timer.tick(fps)
+    pygame.time.delay(100)
+
     #event handling - capturing everything going on your keyboard
     
     for event in pygame.event.get():

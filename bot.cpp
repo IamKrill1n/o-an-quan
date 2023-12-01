@@ -231,7 +231,7 @@ public:
     }
 
 private:
-	const int MAX_DEPTH = 4;
+	const int MAX_DEPTH = 9;
 
 	int ultility(Game& game, int isEnd)
 	{
