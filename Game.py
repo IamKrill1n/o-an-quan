@@ -1,8 +1,6 @@
 from Table import *
 from subprocess import Popen, PIPE
 
-program_path = "o-an-quan\main.exe"
-
 def get_coord(x, y):
     sol = (y - (HEIGHT/2 - 100)) // 100 * 5
     if sol == 0: #player 2's side
@@ -75,7 +73,7 @@ class Game:
             return True
         return False
 
-    def make_AI_move(self): #print cell and direction
+    def make_AI_move(self, program_path = "o-an-quan\main.exe"): #print cell and direction
         p = Popen([program_path], stdout=PIPE, stdin=PIPE, stderr=PIPE)
         data_to_write = str(self.turn_step//2) + ' ' + (' '.join(' '.join(str(self.table.table[i][j]) for j in range(2)) for i in range(12)) + ' ' + str(self.table.player_point[0]) + ' ' + str(self.table.player_point[1]))
         stdout_data = p.communicate(input=data_to_write.encode())[0].decode()
