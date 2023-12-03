@@ -28,7 +28,7 @@ public:
 	vector<ar<int, 2> > state;
 	int P1points;
 	int P2points;
-	const int quanValue = 5;
+	const int mandarinValue = 5;
 	Game(int turn_, vector<ar<int, 2> > state_, int P1points_, int P2points_)
 	{
 		turn = turn_;
@@ -41,6 +41,14 @@ public:
 		0						6
 			1	2 	3	4	5
 		*/
+	}
+
+	void set_state(int turn_, vector<ar<int, 2> > state_, int P1points_, int P2points_)
+	{
+		turn = turn_;
+		state = state_;
+		P1points = P1points_;
+		P2points = P2points_;
 	}
 
 	void check_borrow()
@@ -131,9 +139,9 @@ public:
 				num_rocks--;
 			}
 			int next_cell = move.next_move().cell;
-			if (state[next_cell][0] != 0) // if next cell has dan
+			if (state[next_cell][0] != 0) // if next cell has citizens
 			{
-				if (next_cell % 6 == 0) break; // if next cell is quan cell
+				if (next_cell % 6 == 0) break; // if next cell is mandarin cell
 				num_rocks = state[next_cell][0];
 				state[next_cell][0] = 0;
 				move = move.next_move();
@@ -141,12 +149,12 @@ public:
 			}		
 			
 			// eating steps
-			while(state[move.next_move().cell] == ar<int, 2>{0, 0} &&
-				  state[move.next_move().next_move().cell] != ar<int, 2>{0, 0})
+			while(state[move.next_move().cell] == ar<int, 2>{0, 0} && 
+			state[move.next_move().next_move().cell] != ar<int, 2>{0, 0})
 			{
-				if (playerid == 0) P1points += state[move.next_move().next_move().cell][0] + state[move.next_move().next_move().cell][1] * quanValue;
-				else P2points += state[move.next_move().next_move().cell][0] + state[move.next_move().next_move().cell][1] * quanValue;
 				move = move.next_move().next_move();
+				if (playerid == 0) P1points += state[move.cell][0] + state[move.cell][1] * mandarinValue;
+				else P2points += state[move.cell][0] + state[move.cell][1] * mandarinValue;
 				state[move.cell] = {0, 0};
 			}
 		}

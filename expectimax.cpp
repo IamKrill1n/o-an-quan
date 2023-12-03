@@ -3,11 +3,11 @@
 
 #include "game.cpp"
 
-class ExpectiminimaxStrategy : public Strategy {
+class ExpectimaxStrategy : public Strategy {
 public:
-	const int INF = 77777;
+	const int INF = 7777;
 	int maxDepth;
-    ExpectiminimaxStrategy(Game* game, int maxDepth) : Strategy(game), maxDepth(maxDepth) {}
+    ExpectimaxStrategy(Game* game, int maxDepth) : Strategy(game), maxDepth(maxDepth) {}
 
     Move calculate_move() override 
     {
@@ -20,12 +20,12 @@ public:
         {
             Game tempGame = *game;
             tempGame.make_move(move);
-            int moveValue = expectiminimax(tempGame, 1, !isMaximizingPlayer, game->turn);
+            int moveValue = expectimax(tempGame, 0, !isMaximizingPlayer, game->turn);
             // cout << moveValue << '\n';
             if (optimize(bestValue, moveValue, isMaximizingPlayer)) bestMove = move;
         }
-        cout << "MOVE PLAYED: ";
-    	bestMove.print();
+        // cout << "MOVE PLAYED: ";
+    	// bestMove.print();
         return bestMove;
     }
 
@@ -40,17 +40,17 @@ private:
     	return 0;
     }
 
-	int ultility(Game& game, int isEnd)
+	int utility(Game& game, int isEnd)
 	{
 		if (isEnd == 1) return INF - 1;
 		else if (isEnd == 2) return -INF + 1;
-		return 420 * (game.P1points - game.P2points);
+		return 120 * (game.P1points - game.P2points);
 	}
 
-    int expectiminimax(Game& game, int depth, bool isMaximizingPlayer, int agentId)
+    int expectimax(Game& game, int depth, bool isMaximizingPlayer, int agentId)
     {
     	int isEnd = game.check_ending();
-        if (isEnd || depth == maxDepth) return ultility(game, isEnd);
+        if (isEnd || depth == maxDepth) return utility(game, isEnd);
 		
         if (isMaximizingPlayer ^ agentId)
         {
@@ -64,7 +64,7 @@ private:
 		        // cout << "P1 move: ";
 		        // move.print();
 		        // tempGame.print_table();
-		        int moveValue = expectiminimax(tempGame, depth + 1, !isMaximizingPlayer, agentId);
+		        int moveValue = expectimax(tempGame, depth + 1, !isMaximizingPlayer, agentId);
 		        optimize(bestValue, moveValue, isMaximizingPlayer);
 			}
 
@@ -79,7 +79,7 @@ private:
         		Game tempGame = game;
         		tempGame.make_move(move);
 
-        		int moveValue = expectiminimax(tempGame, depth + 1, !isMaximizingPlayer, agentId);
+        		int moveValue = expectimax(tempGame, depth + 1, !isMaximizingPlayer, agentId);
 
         		avgValue += moveValue;
         	}

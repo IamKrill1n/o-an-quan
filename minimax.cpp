@@ -22,15 +22,15 @@ public:
             Game tempGame = *game;
             tempGame.make_move(move);
             // move.print();
-            int moveValue = minimax(tempGame, 1, !isMaximizingPlayer, alpha, beta);
-            // cout << moveValue << ' ' << isMaximizingPlayer << '\n';
+            int moveValue = minimax(tempGame, 0, !isMaximizingPlayer, alpha, beta);
+            // cout << "Move value = " << moveValue << '\n';
             if (optimize(bestValue, moveValue, isMaximizingPlayer)) bestMove = move;
             if (isMaximizingPlayer) alpha = max(alpha, moveValue);
             else beta = min(beta, moveValue);
             if (beta <= alpha) break;
         }
-        cout << "MOVE PLAYED: ";
-    	bestMove.print();
+        // cout << "MOVE PLAYED: ";
+    	// bestMove.print();
         return bestMove;
     }
 
@@ -45,7 +45,7 @@ private:
     	return 0;
     }
 
-	int ultility(Game& game, int isEnd)
+	int utility(Game& game, int isEnd)
 	{
 		if (isEnd == 1) return INF - 1;
 		else if (isEnd == 2) return -INF + 1;
@@ -55,7 +55,7 @@ private:
     int minimax(Game& game, int depth, bool isMaximizingPlayer, int alpha, int beta)
     {
     	int isEnd = game.check_ending();
-        if (isEnd || depth == maxDepth) return ultility(game, isEnd);
+        if (isEnd || depth == maxDepth) return utility(game, isEnd);
              
         int bestValue = isMaximizingPlayer ? -INF : INF;  
         // Move bestMove = {-1, -1};
