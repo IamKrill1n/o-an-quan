@@ -7,15 +7,6 @@ int ans[24][24]; // ans[i][j] = 1 if i wins j, 2 if i loses to j, 3 if draw
 int main()
 {    
 	Game game(0, {{0, 1}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {0, 1}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {5, 0}}, 0, 0);
-    // vector<MinimaxStrategy> minimax_bots;
-    // vector<ExpectimaxStrategy> expectimax_bots;
-    // for (int depth = 4; depth <= 10; depth++)
-    // {
-    // 	MinimaxStrategy minimax(&game, depth, utility1);
-    //     ExpectimaxStrategy expectimax(&game, depth);
-    // 	minimax_bots.push_back(minimax);
-    //     if (depth <= 7) expectimax_bots.push_back(expectimax);
-    // }
     // 1 7 0 0 0 0 0 1 0 0 0 0 0 3 0 0 0 0 0 1 0 0 0 0 0 0 3
     MinimaxStrategy minimax_bots(&game);
     minimax_bots.set_maxDepth(8);
@@ -38,6 +29,7 @@ int main()
         // num_turn++;
         // cout << game.turn << '\n';
     }
+    game.print_table();
     // for (int d1 = 0; d1 <= 18; d1++)
     // for (int d2 = 0; d2 <= 18; d2++)
     // {
@@ -85,5 +77,5 @@ int main()
     //     for (int j = 0; j <= 18; j++) cout << ans[i + 11][j] << ',';
     //     cout << '\n';
     // }
-    return 0;
+    // return 0;
 }
