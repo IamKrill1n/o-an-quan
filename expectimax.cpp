@@ -3,11 +3,25 @@
 
 #include "game.cpp"
 
+typedef function<int(Game&, int)> UtilityFunc;
+
 class ExpectimaxStrategy : public Strategy {
 public:
 	const int INF = 7777;
 	int maxDepth;
-    ExpectimaxStrategy(Game* game, int maxDepth) : Strategy(game), maxDepth(maxDepth) {}
+	UtilityFunc utility;
+
+    ExpectimaxStrategy(Game* game) : Strategy(game) {};
+
+	void set_maxDepth(int maxDepth_)
+	{
+		this->maxDepth = maxDepth_;
+	}
+
+	void set_utility(UtilityFunc utility_)
+	{
+		this->utility = utility_;
+	}
 
     Move calculate_move() override 
     {
@@ -20,7 +34,7 @@ public:
         {
             Game tempGame = *game;
             tempGame.make_move(move);
-            int moveValue = expectimax(tempGame, 0, !isMaximizingPlayer, game->turn);
+            int moveValue = expectimax(tempGame, 0, !isMaximizingPlayer, game->turn, utility);
             // cout << moveValue << '\n';
             if (optimize(bestValue, moveValue, isMaximizingPlayer)) bestMove = move;
         }
@@ -40,14 +54,7 @@ private:
     	return 0;
     }
 
-	int utility(Game& game, int isEnd)
-	{
-		if (isEnd == 1) return INF - 1;
-		else if (isEnd == 2) return -INF + 1;
-		return 120 * (game.P1points - game.P2points);
-	}
-
-    int expectimax(Game& game, int depth, bool isMaximizingPlayer, int agentId)
+    int expectimax(Game& game, int depth, bool isMaximizingPlayer, int agentId, UtilityFunc utility)
     {
     	int isEnd = game.check_ending();
         if (isEnd || depth == maxDepth) return utility(game, isEnd);
@@ -64,7 +71,7 @@ private:
 		        // cout << "P1 move: ";
 		        // move.print();
 		        // tempGame.print_table();
-		        int moveValue = expectimax(tempGame, depth + 1, !isMaximizingPlayer, agentId);
+		        int moveValue = expectimax(tempGame, depth + 1, !isMaximizingPlayer, agentId, utility);
 		        optimize(bestValue, moveValue, isMaximizingPlayer);
 			}
 
@@ -79,7 +86,7 @@ private:
         		Game tempGame = game;
         		tempGame.make_move(move);
 
-        		int moveValue = expectimax(tempGame, depth + 1, !isMaximizingPlayer, agentId);
+        		int moveValue = expectimax(tempGame, depth + 1, !isMaximizingPlayer, agentId, utility);
 
         		avgValue += moveValue;
         	}

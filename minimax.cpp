@@ -3,14 +3,24 @@
 
 #include "game.cpp"
 
-typedef std::function<int(Game&, int)> UtilityFunc;
+typedef function<int(Game&, int)> UtilityFunc;
 
 class MinimaxStrategy : public Strategy {
 public:
 	const int INF = 7777;
 	int maxDepth;
     UtilityFunc utility;
-    MinimaxStrategy(Game* game, int maxDepth, UtilityFunc utility) : Strategy(game), maxDepth(maxDepth), utility(utility) {}
+    MinimaxStrategy(Game* game) : Strategy(game){};
+    
+    void set_maxDepth(int maxDepth_)
+    {
+    	this->maxDepth = maxDepth_;
+    }
+
+    void set_utility(UtilityFunc utility_)
+    {
+    	this->utility = utility_;
+    }
 
     Move calculate_move() override 
     {
