@@ -7,7 +7,7 @@ typedef std::function<int(Game&, int)> UtilityFunc;
 
 class MinimaxStrategy : public Strategy {
 public:
-	static const int INF = 7777;
+	const int INF = 7777;
 	int maxDepth;
     UtilityFunc utility;
     MinimaxStrategy(Game* game, int maxDepth, UtilityFunc utility) : Strategy(game), maxDepth(maxDepth), utility(utility) {}

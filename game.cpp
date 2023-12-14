@@ -35,7 +35,7 @@ public:
 		// state = {{0, 1}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {0, 1}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {5, 0}};
 		state = state_; // {{7, 0}, {1, 0}, {2, 0}, {0, 0}, {7, 0}, {0, 0}, {4, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}};
 		P1points = P1points_;
-		P2points = P2points_;	
+		P2points = P2points_;
 		/*
 			11	10	9	8	7
 		0						6
@@ -119,7 +119,9 @@ public:
 			else if (P1points < P2points) return 2; // player 2 wins
 			else return 3; // draw
 		}
-		return 0;
+		if (P1points < 0 && -P1points > 50) return 2; // player 1 borrow more than 50 rocks then player 2 wins
+		if (P2points < 0 && -P2points > 50) return 1; // player 2 borrow more than 50 rocks then player 1 wins
+		return 0; // game not end
 	}
 
 	void make_move(Move move)
@@ -185,7 +187,9 @@ public:
     virtual Move calculate_move() = 0;
     void execute_move()
     {
-    	game->make_move(calculate_move());
+		Move move = calculate_move();
+		move.print();
+    	game->make_move(move);
     }
 };
 

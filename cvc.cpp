@@ -20,8 +20,8 @@ int main()
 
     Player p1;
     Player p2;
-    p2.set_strategy(&expectimax_bots[7]);
     p1.set_strategy(&minimax_bots[6]);
+    p2.set_strategy(&minimax_bots[6]);
     while(!game.check_ending())
     {
         // game.check_borrow(game.turn);
