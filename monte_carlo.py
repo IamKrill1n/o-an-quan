@@ -14,12 +14,6 @@ QUANVALUE = 5
 DISCOUNT_FACTOR = 0.01
 
 table = [[0, 1], [5, 0], [5, 0], [5, 0], [5, 0], [5, 0], [0, 1], [5, 0], [5, 0], [5, 0], [5, 0], [5, 0]]
-def get_coord(x, y):
-    sol = (y - (HEIGHT/2 - 100)) // 100 * 5
-    if sol == 0: #player 2's side
-        return 11 - (x-200) // ((WIDTH - 400) / 5)
-    else: #player 1's side
-        return  (x-200) // ((WIDTH - 400) / 5) + 1
 
 generated = dict()    
 class game:
@@ -34,6 +28,7 @@ class game:
         self.N = N
         self.Q = Q
         self.move = None
+        self.square = None
     
     
     def borrow_point(self, playerID):
@@ -85,6 +80,7 @@ class game:
                     if event == 'LEFT':
                         num_rocks = self.table[square][0]
                         self.table[square][0] = 0
+                        temp = square 
                         while num_rocks > 0:
                             num_rocks -= 1
                             square = (square - 1) % 12
@@ -97,6 +93,7 @@ class game:
                             self.children.append(curr)
                             curr.parent = self
                             curr.move = event # save the move 
+                            curr.square = temp # save the square
                             generated[tuple(map(tuple,self.table))] = True  
                             
                             curr.gen_valid_move(square = square, sign = sign) 
@@ -105,6 +102,7 @@ class game:
                     if event == 'RIGHT':
                         num_rocks = self.table[square][0]
                         self.table[square][0] = 0
+                        temp = square
                         while num_rocks > 0:
                             num_rocks -= 1
                             square = (square + 1) % 12
@@ -117,6 +115,7 @@ class game:
                             self.children.append(curr)
                             curr.parent = self 
                             curr.move = event # save the move 
+                            curr.square = temp
                             generated[tuple(map(tuple,self.table))] = True 
                             curr.gen_valid_move(square = square, sign = sign) 
                         
@@ -261,7 +260,7 @@ class MCTS:
         max_value = max(self.game.children, key = lambda x: x.value(self.explore)).value(self.explore)
         max_games = [n for n in self.game.children if n.value(self.explore) == max_value]
         best_game = random.choice(max_games)
-        return best_game.move 
+        return best_game.move, best_game.square
     
     # def move(self):
     #     pass 
@@ -271,9 +270,9 @@ class MCTS:
 
 outcomes = {1: 0, -1: 0}
 game_test = game(table = table, playerID = 1)
-search = MCTS(game = game_test, explore = 0.5)
-search.search(time_limit = 2)
-for key in outcomes:
-    print(f"{key} : {outcomes[key]}")
-print(search.best_move())
-print(search.statistics())
+# search = MCTS(game = game_test, explore = 0.5)
+# search.search(time_limit = 2)
+# for key in outcomes:
+#     print(f"{key} : {outcomes[key]}")
+# print(search.best_move())
+# print(search.statistics())
