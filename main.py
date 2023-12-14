@@ -10,7 +10,10 @@ AI_test = 1
 playState = Game()
 pygame.display.set_caption('oanquantet')
 #ccw 1, cw 0
-program_path = "main.exe"
+# program_path_1 = "main.exe"
+# program_path_2 = "main.exe"
+strategy_1 = 'minimax'
+strategy_2 = 'minimax'
 run = True
 while run:
     timer.tick(fps)
@@ -29,10 +32,13 @@ while run:
         if gameState == 'end': 
             continue
         playState.fix_empty_rows()
-        if AI_test and playState.turn_step == 0 or playState.turn_step == 2:
-            playState.make_AI_move(program_path)
+        if AI_test:
+            if playState.turn_step == 0:
+                playState.make_AI_move(strategy_1, )
+            elif playState.turn_step == 2:
+                playState.make_AI_move(strategy_2)
         elif AI_turn and playState.turn_step == 2:
-            playState.make_AI_move(program_path)
+            playState.make_AI_move(strategy_1)
         else:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: #check left mouse click
                 playState.check_valid_move(event)

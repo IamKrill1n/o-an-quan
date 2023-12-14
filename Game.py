@@ -1,5 +1,6 @@
 from Table import *
 from subprocess import Popen, PIPE
+from monte_carlos import *
 
 def get_coord(x, y):
     sol = (y - (HEIGHT/2 - 100)) // 100 * 5
@@ -71,13 +72,23 @@ class Game:
             for i in range(12):
                 self.table.table[i] = [0, 0]
             return True
+        elif self.table.player_point[0] < -50 or self.table.player_point[1] < -50:
+            return True
         return False
 
-    def make_AI_move(self, program_path = "o-an-quan\main.exe"): #print cell and direction
-        p = Popen([program_path], stdout=PIPE, stdin=PIPE, stderr=PIPE)
-        data_to_write = str(self.turn_step//2) + ' ' + (' '.join(' '.join(str(self.table.table[i][j]) for j in range(2)) for i in range(12)) + ' ' + str(self.table.player_point[0]) + ' ' + str(self.table.player_point[1]))
-        stdout_data = p.communicate(input=data_to_write.encode())[0].decode()
-        AI_move = list(map(int, stdout_data.split()))
+    def make_AI_move(self, strategy, program_path = "o-an-quan\main.exe", depth = 7, utility = 1): #print cell and direction
+        if strategy == 'minimax':  
+            p = Popen([program_path], stdout=PIPE, stdin=PIPE, stderr=PIPE)
+            data_to_write = str(self.turn_step//2) + ' ' + (' '.join(' '.join(str(self.table.table[i][j]) for j in range(2)) for i in range(12)) + ' ' + str(self.table.player_point[0]) + ' ' + str(self.table.player_point[1]))
+            data_to_write = data_to_write + ' ' + strategy + ' ' + str(depth) + ' '+ str(utility)
+            stdout_data = p.communicate(input=data_to_write.encode())[0].decode()
+            AI_move = list(map(int, stdout_data.split()))
+        elif strategy == 'monte-carlos':
+            game_test = game(playerID = 1, table = self.table.table, player_point=self.table.player_point, turn_step=self.turn_step)
+            search = MCTS(game = game_test, explore = 0.5)
+            search.search(time_limit = 2)
+            AI_move = search.best_move()
         print(AI_move)
         self.table.update(self.turn_step//2, AI_move[0], AI_move[1])
         self.turn_step = (self.turn_step + 2) % 4
+        
