@@ -7,11 +7,11 @@ typedef function<int(Game&, int)> UtilityFunc;
 
 class MinimaxStrategy : public Strategy {
 public:
-	const int INF = 7777;
+	const int INF = 7777777;
 	int maxDepth;
     UtilityFunc utility;
     MinimaxStrategy(Game* game) : Strategy(game){};
-    
+
     void set_maxDepth(int maxDepth_)
     {
     	this->maxDepth = maxDepth_;

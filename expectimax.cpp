@@ -7,7 +7,7 @@ typedef function<int(Game&, int)> UtilityFunc;
 
 class ExpectimaxStrategy : public Strategy {
 public:
-	const int INF = 7777;
+	const int INF = 7777777;
 	int maxDepth;
 	UtilityFunc utility;
 

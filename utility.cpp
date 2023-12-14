@@ -3,7 +3,7 @@
 
 #include "game.cpp"
 
-const int INF = 77777;
+const int INF = 7777777;
 
 int utility1(Game& game, int isEnd)
 {

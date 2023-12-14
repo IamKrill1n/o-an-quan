@@ -7,21 +7,26 @@ int ans[24][24]; // ans[i][j] = 1 if i wins j, 2 if i loses to j, 3 if draw
 int main()
 {    
 	Game game(0, {{0, 1}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {0, 1}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {5, 0}}, 0, 0);
-    vector<MinimaxStrategy> minimax_bots;
-    vector<ExpectimaxStrategy> expectimax_bots;
-    for (int depth = 0; depth <= 10; depth++)
-    {
-    	MinimaxStrategy minimax(&game, depth, utility1);
-        ExpectimaxStrategy expectimax(&game, depth);
-    	minimax_bots.push_back(minimax);
-        if (depth <= 7) expectimax_bots.push_back(expectimax);
-    }
+    // vector<MinimaxStrategy> minimax_bots;
+    // vector<ExpectimaxStrategy> expectimax_bots;
+    // for (int depth = 4; depth <= 10; depth++)
+    // {
+    // 	MinimaxStrategy minimax(&game, depth, utility1);
+    //     ExpectimaxStrategy expectimax(&game, depth);
+    // 	minimax_bots.push_back(minimax);
+    //     if (depth <= 7) expectimax_bots.push_back(expectimax);
+    // }
     // 1 7 0 0 0 0 0 1 0 0 0 0 0 3 0 0 0 0 0 1 0 0 0 0 0 0 3
-
+    MinimaxStrategy minimax_bots(&game);
+    minimax_bots.set_maxDepth(8);
+    minimax_bots.set_utility(utility1);
+    ExpectimaxStrategy expectimax_bots(&game);
+    expectimax_bots.set_maxDepth(5);
+    expectimax_bots.set_utility(utility1);
     Player p1;
     Player p2;
-    p1.set_strategy(&minimax_bots[6]);
-    p2.set_strategy(&minimax_bots[6]);
+    p1.set_strategy(&expectimax_bots);
+    p2.set_strategy(&minimax_bots);
     while(!game.check_ending())
     {
         // game.check_borrow(game.turn);
