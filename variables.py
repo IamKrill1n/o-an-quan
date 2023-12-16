@@ -7,6 +7,7 @@ font_size_big = 50
 screen = pygame.display.set_mode([WIDTH, HEIGHT])
 font = pygame.font.Font('DTM-Sans.ttf', font_size)
 big_font = pygame.font.Font('DTM-Sans.ttf', font_size_big)
+QUANVALUE = 5
 timer = pygame.time.Clock()
 fps = 120
 screen_color = (0, 0, 0)

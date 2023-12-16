@@ -12,8 +12,9 @@ pygame.display.set_caption('oanquantet')
 #ccw 1, cw 0
 # program_path_1 = "main.exe"
 # program_path_2 = "main.exe"
+strategy = ['random', 'minimax', 'expectimax']
 strategy_1 = 'minimax'
-strategy_2 = 'minimax'
+strategy_2 = 'expectimax'
 run = True
 while run:
     timer.tick(fps)
@@ -29,14 +30,18 @@ while run:
             if gameState == 'end':
                 playState = Game()
                 gameState = 'start'
-        if gameState == 'end': 
+        if playState.game_over(): 
+            gameState = 'end'
+            playState.EndGameText()
+            playState.turn_step = 4
             continue
+        playState.render()
         playState.fix_empty_rows()
         if AI_test:
             if playState.turn_step == 0:
-                playState.make_AI_move(strategy_1, )
+                playState.make_AI_move(strategy_1, depth=7, utility=2)
             elif playState.turn_step == 2:
-                playState.make_AI_move(strategy_2)
+                playState.make_AI_move(strategy_2, depth=3, utility=1)
         elif AI_turn and playState.turn_step == 2:
             playState.make_AI_move(strategy_1)
         else:
@@ -45,11 +50,6 @@ while run:
             
             if event.type == pygame.KEYDOWN and playState.table.selection != -1 and (event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT):  
                 playState.play(playState.table.selection, event.key)
-        playState.render()
-    
-    if playState.game_over():
-        gameState = 'end'
-        playState.EndGameText()
-        playState.turn_step = 4
         
+            
 pygame.quit()
