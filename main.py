@@ -4,8 +4,8 @@ from variables import *
 from Game import Game
 pygame.init()
 gameState = 'start'
-AI_turn = 0
-AI_test = 1
+AI_turn = 1
+AI_test = 0
 
 playState = Game()
 pygame.display.set_caption('oanquantet')
@@ -32,10 +32,10 @@ while run:
                 gameState = 'start'
         if playState.game_over(): 
             gameState = 'end'
-            playState.EndGameText()
             playState.turn_step = 4
+        playState.redraw()
+        if gameState == 'end':
             continue
-        playState.render()
         playState.fix_empty_rows()
         if AI_test:
             if playState.turn_step == 0:
@@ -48,8 +48,8 @@ while run:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: #check left mouse click
                 playState.check_valid_move(event)
             
-            if event.type == pygame.KEYDOWN and playState.table.selection != -1 and (event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT):  
-                playState.play(playState.table.selection, event.key)
+            if event.type == pygame.KEYDOWN and playState.state.selection != -1 and (event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT):  
+                playState.play(playState.state.selection, event.key)
         
             
 pygame.quit()

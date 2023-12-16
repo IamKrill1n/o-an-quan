@@ -28,32 +28,8 @@ class Game:
         self.turn_step = 0
         self.AI_move = None
 
-    def EndGameText(self):
-        screen.fill('black')
-        winner = 1 if self.state.player_point[0] > self.state.player_point[1] else 2
-        text_1 = 'Player ' + str(winner) + ' has won the game with ' + str(self.state.player_point[winner-1]) + ' points!'
-        if self.state.player_point[0] == self.state.player_point[1]:
-            text_1 = 'The game has come to a draw'
-        text_2 = 'Press enter or return to play again'
-        screen.blit(big_font.render(text_1,  True, 'white'), ((WIDTH - big_font.size(text_1)[0]) / 2, 50))
-        screen.blit(big_font.render(text_2,  True, 'white'), ((WIDTH - big_font.size(text_2)[0]) / 2, 125))
-        pygame.display.flip()
-
-    def render(self):
-        if self.turn_step >= 4:
-            return
-        screen.fill('black')
-        self.state.render()
-        screen.blit(font.render('Player 1 point:' + str(self.state.player_point[0]), True, 'white'), (0, HEIGHT - 30))
-        screen.blit(font.render('Player 2 point:' + str(self.state.player_point[1]), True, 'white'), (0, 0))
-        status_text = ['Player 1: Select a square to play!', 'Use keyboard < or > to select a direction!',
-                    'Player 2: Select a square to play!', 'Use keyboard < or > to Select a direction!', '']
-        if self.turn_step < 2:
-            screen.blit(big_font.render(status_text[self.turn_step], True, 'white'), ((WIDTH - big_font.size(status_text[self.turn_step])[0]) / 2, HEIGHT - 100))
-        else:
-            screen.blit(big_font.render(status_text[self.turn_step], True, 'white'), ((WIDTH - big_font.size(status_text[self.turn_step])[0]) / 2, 50))
-        #creating an end state later ?
-        pygame.display.flip()
+    def redraw(self):
+        self.state.redraw(self.turn_step)
 
     
     def check_valid_move(self, event):
@@ -73,14 +49,14 @@ class Game:
             #for player 1, going left is cw, right is ccw
             #for player 2, going left is ccw, right is cw   
             direction = (playerID + (event == pygame.K_RIGHT)) % 2
+            self.state.update(playerID, cell, direction, self.turn_step)
             self.turn_step = (self.turn_step + 1) % 4
-            self.state.update(playerID, cell, direction)
-
+        
     def fix_empty_rows(self):
         if self.turn_step == 0 and self.state.empty_rows[0]:
-            self.state.borrow_point(0)
+            self.state.borrow_point(0, self.turn_step)
         if self.turn_step == 2 and self.state.empty_rows[1]:
-            self.state.borrow_point(1)
+            self.state.borrow_point(1, self.turn_step)
     
     def game_over(self):
         if self.state.table[0] == [0,0] and self.state.table[6] == [0,0]:
@@ -108,7 +84,7 @@ class Game:
 
     
         print(AI_move)
-        self.state.update(self.turn_step//2, AI_move[0], AI_move[1])
-        print(self.state)
+        self.state.update(self.turn_step//2, AI_move[0], AI_move[1], self.turn_step)
+        # print(self.state)
         self.turn_step = (self.turn_step + 2) % 4
         
