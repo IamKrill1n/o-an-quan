@@ -91,7 +91,6 @@ Individual* mutate(Individual& child)
 
 Individual* crossover(Individual* parent1, Individual* parent2)
 {
-    mt19937& rng = RandomGenerator().getRng();
     return new Individual(parent1->w1, parent2->w2);;
 }
 
