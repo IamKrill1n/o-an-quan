@@ -8,7 +8,7 @@ class MinimaxStrategy : public Strategy {
 public:
 	const double INF = 7777777;
 	int maxDepth;
-    double gamma;
+    double w1, w2;
     MinimaxStrategy(Game* game) : Strategy(game){};
 
     void set_maxDepth(int maxDepth_)
@@ -16,9 +16,10 @@ public:
     	this->maxDepth = maxDepth_;
     }
 
-    void set_gamma(double gamma_)
+    void set_weights(double w1_, double w2_)
     {
-        this->gamma = gamma_;
+        this->w1 = w1_;
+        this->w2 = w2_;
     }
 
     Move calculate_move() override 
@@ -57,21 +58,30 @@ private:
     	return 0;
     }
 
-    double utility(Game& game, int isEnd)
+    double eval(Game& game, int isEnd)
     {
         if (isEnd == 1) return INF - 1;
         else if (isEnd == 2) return -INF + 1;
-        int p1_stones = 0, p2_stones = 0;
-        for (int cell = 1; cell < 6; cell++) p1_stones += game.state[cell][0];
-    	for (int cell = 7; cell < 12; cell++) p2_stones += game.state[cell][0];
-
-        return game.P1points - game.P2points + gamma * (p1_stones - p2_stones);
+        int p1_stones = 0, p2_stones = 0, p1_non_empty_square = 0, p2_non_empty_square = 0;
+        for (int cell = 1; cell < 6; cell++) 
+        if (game.state[cell][0]) 
+        {
+            p1_stones += game.state[cell][0];
+            p1_non_empty_square++;
+        }
+    	for (int cell = 7; cell < 12; cell++) 
+        if (game.state[cell][0])
+        {
+            p2_stones += game.state[cell][0];
+            p2_non_empty_square++;
+        }
+        return game.P1points - game.P2points + w1 * (p1_stones - p2_stones) + w2 * (p1_non_empty_square - p2_non_empty_square);
     }
 
     double minimax(Game& game, int depth, bool isMaximizingPlayer, double alpha, double beta)
     {
     	int isEnd = game.check_ending();
-        if (isEnd || depth == maxDepth) return utility(game, isEnd);
+        if (isEnd || depth == maxDepth) return eval(game, isEnd);
              
         double bestValue = isMaximizingPlayer ? -INF : INF;  
         // Move bestMove = {-1, -1};

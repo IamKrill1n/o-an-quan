@@ -1,7 +1,7 @@
 #include "game.cpp"
 #include "minimax.cpp"
 
-const int POPULATION_SIZE = 10;
+const int POPULATION_SIZE = 100;
 class RandomGenerator {
 public:
     RandomGenerator() : rng(chrono::steady_clock::now().time_since_epoch().count()) {}
@@ -12,35 +12,36 @@ private:
     mt19937 rng;
 };
 struct Individual
-{
-    vector<double> weights;
+{   
+    double w1, w2;
     int fitness;
-    Individual(vector<double> weights_) : weights(weights_) {}
+    Individual(double w1, double w2) : w1(w1), w2(w2) {}
     bool operator < (const Individual& other) const
     {
         return fitness > other.fitness;
     }
-    void set_state(vector<double> weights_, int fitness_)
+    void set_state(double w1_, double w2_, int fitness_)
     {
-        weights = weights_;
+        w1 = w1_;
+        w2 = w2_;
         fitness = fitness_;
     }
 };
 Individual* population[POPULATION_SIZE];
 
-int evaluate_fitness(const vector<double>& weights)
+int evaluate_fitness(const double w1, const double w2)
 {    
     // Set the weights in the evaluation function
-    cout << "Weights: " << weights[0] << ' ' << weights[1] << '\n';
+    cout << "Weights: " << w1 << ' ' << w2 << '\n';
     Game game;
     MinimaxStrategy minimax(&game);
     minimax.set_maxDepth(5);
-    minimax.set_weights(weights);
+    minimax.set_weights(w1, w2);
     Player p1;
     p1.set_strategy(&minimax);
     MinimaxStrategy minimax2(&game);
     minimax2.set_maxDepth(5);
-    minimax2.set_weights({1.0, 0,0});
+    minimax2.set_weights(1.0, 0.0);
     Player p2;
     p2.set_strategy(&minimax2);
     int num_wins = 0;
@@ -58,12 +59,7 @@ int evaluate_fitness(const vector<double>& weights)
                 else p2.play();
             }
 
-            if (game.check_ending() == ai_player + 1) 
-            {
-                num_wins++;
-                cout << "WIN\n";
-            }
-            else cout << "LOSE\n";   
+            if (game.check_ending() == ai_player + 1) num_wins++;
         }
     }
 
@@ -76,11 +72,10 @@ void create_OG_population()
     mt19937& rng = RandomGenerator().getRng();
     for (int i = 0; i < POPULATION_SIZE; i++)
     {
-        vector<double> weights;
-        weights.push_back(1.0);
-        weights.push_back(uniform_real_distribution<double>(0, 1)(rng));
+        double w1 = uniform_real_distribution<double>(-0.5, 0.5)(rng);
+        double w2 = uniform_real_distribution<double>(-0.5, 0.5)(rng);
         // cout << "Weights: " << weights[0] << ' ' << weights[1] << '\n';
-        population[i] = new Individual(weights);
+        population[i] = new Individual(w1, w2);
         // cout << "Individual " << i << ": " << population[i]->weights[0] << ' ' << population[i]->weights[1] << '\n';
     }
 }
@@ -89,19 +84,15 @@ Individual* mutate(Individual& child)
 {
     mt19937& rng = RandomGenerator().getRng();
     Individual* mutation = &child;
-    int index = uniform_int_distribution<int>(0, child.weights.size()-1)(rng);
-    mutation->weights[index] = uniform_real_distribution<double>(0, 5)(rng);
+    if (rng()%2) mutation->w1 = uniform_real_distribution<double>(-0.5, 0.5)(rng);
+    else mutation->w2 = uniform_real_distribution<double>(-0.5, 0.5)(rng);
     return mutation;
 }
 
 Individual* crossover(Individual* parent1, Individual* parent2)
 {
     mt19937& rng = RandomGenerator().getRng();
-    vector<double> w;
-    int mark = uniform_int_distribution<int>(1, parent1->weights.size()-1)(rng); // mark is the index of the crossover point
-    for (int i = 0; i < mark; i++) w.push_back(parent1->weights[i]);
-    for(int i = mark; i<parent1->weights.size(); i++) w.push_back(parent2->weights[i]);
-    return new Individual(w);
+    return new Individual(parent1->w1, parent2->w2);;
 }
 
 void create_new_generation()
@@ -112,7 +103,7 @@ void create_new_generation()
     cout << "Best fitness: " << population[0]->fitness << '\n';
     cout << "Worst fitness: " << population[POPULATION_SIZE - 1]->fitness << '\n';
     // The bottom half of the population is replaced by the offspring of the top half
-    for (int i = 0; i < POPULATION_SIZE / 2; i += 2)
+    for (int i = 0; i < POPULATION_SIZE / 2; i++)
     {
         // Select two parents from the top half of the population
         int parent1 = uniform_int_distribution<int>(0, POPULATION_SIZE / 2 - 1)(rng);
@@ -121,11 +112,11 @@ void create_new_generation()
 
         // Crossover and mutation
         Individual* child1 = crossover(population[parent1], population[parent2]);
-        Individual* child2 = crossover(population[parent2], population[parent1]);
-
+        int mutation = uniform_int_distribution<int>(1, 10)(rng);
+        if (mutation <= 2) child1 = mutate(*child1);
         // Replace an individual from the bottom half of the population with the new child
-        population[POPULATION_SIZE / 2 + i] = child1;
-        population[POPULATION_SIZE / 2 + i + 1] = child2;
+        delete population[POPULATION_SIZE - i - 1];
+        population[POPULATION_SIZE - i - 1] = child1;
     }
 }
 int main()
@@ -137,11 +128,12 @@ int main()
         generation++;
         for(Individual* ind : population) //cout << ind->weights[0] << ' ' << ind->weights[1] << '\n';
         {
-            ind->fitness = evaluate_fitness(ind->weights);
+            ind->fitness = evaluate_fitness(ind->w1, ind->w2);
         }
-        if (generation > 10) break;
+        if (generation > 100) break;
         create_new_generation();
         cout << "Generation " << generation << ": " << population[0]->fitness << '\n';
     }
+    cout << "Best weights: " << population[0]->w1 << ' ' << population[0]->w2 << '\n';
     return 0;
 }
