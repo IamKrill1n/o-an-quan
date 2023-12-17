@@ -12,10 +12,10 @@ int main()
     MinimaxStrategy minimax_bot1(&game);
     minimax_bot1.set_maxDepth(5);
     // minimax_bot1.set_weights(0.140251, -0.217708);
-    minimax_bot1.set_weights(0, 0);
+    minimax_bot1.set_weights(0.388364, 0.563261);
     // Human human(&game);
     MinimaxStrategy minimax_bot2(&game);
-    minimax_bot2.set_maxDepth(7);
+    minimax_bot2.set_maxDepth(5);
     minimax_bot2.set_weights(0, 0);
     // ExpectimaxStrategy expectimax_bot(&game);
     // expectimax_bot.set_maxDepth(7);

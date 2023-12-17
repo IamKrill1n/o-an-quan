@@ -1,7 +1,7 @@
 #include "game.cpp"
 #include "minimax.cpp"
 
-const int POPULATION_SIZE = 10;
+const int POPULATION_SIZE = 30;
 class RandomGenerator {
 public:
     RandomGenerator() : rng(chrono::steady_clock::now().time_since_epoch().count()) {}
@@ -31,12 +31,12 @@ int evaluate_fitness(const double w1, const double w2)
     cout << "Weights: " << w1 << ' ' << w2 << '\n';
     Game game;
     MinimaxStrategy minimax(&game);
-    minimax.set_maxDepth(6);
+    minimax.set_maxDepth(5);
     minimax.set_weights(w1, w2);
     Player p1;
     p1.set_strategy(&minimax);
     MinimaxStrategy minimax2(&game);
-    minimax2.set_maxDepth(6);
+    minimax2.set_maxDepth(5);
     minimax2.set_weights(0.0, 0.0);
     Player p2;
     p2.set_strategy(&minimax2);
@@ -90,14 +90,16 @@ Individual* mutate(Individual& child)
 
 Individual* crossover(Individual* parent1, Individual* parent2)
 {
-    return new Individual(parent1->w1, parent2->w2);;
+    mt19937& rng = RandomGenerator().getRng();
+    return new Individual(uniform_real_distribution<double>(parent1->w1, parent2->w1)(rng), 
+                          uniform_real_distribution<double>(parent1->w2, parent2->w2)(rng));
 }
 
 void create_new_generation()
 {
     mt19937& rng = RandomGenerator().getRng();
     // The bottom half of the population is replaced by the offspring of the top half
-    for (int i = 0; i < POPULATION_SIZE / 2; i++)
+    for (int i = 0; POPULATION_SIZE - i - 1 >= POPULATION_SIZE/10; i++)
     {
         // Select two parents from the top half of the population
         int parent1 = uniform_int_distribution<int>(0, POPULATION_SIZE / 2 - 1)(rng);
@@ -116,10 +118,8 @@ void create_new_generation()
 int main()
 {
     create_OG_population();
-    int generation = 0;
-    while(generation < 7)
+    for (int generation = 1; generation < 10; generation++)
     {
-        generation++;
         cout << "Generation " << generation << '\n';
         for(Individual* ind : population) ind->fitness = evaluate_fitness(ind->w1, ind->w2);
         sort(population, population + POPULATION_SIZE, [](const Individual* a, const Individual* b) {return a->fitness > b->fitness;});
@@ -127,8 +127,8 @@ int main()
         cout << "Best fitness: " << population[0]->fitness << '\n';
         cout << "Worst fitness: " << population[POPULATION_SIZE - 1]->fitness << '\n';
         // if (generation > 100) break;
-        cout << "Best weights: " << population[0]->w1 << ' ' << population[0]->w2 << '\n';
-        if (generation < 7) create_new_generation();
+        cout << "Best weights: " << population[0]->w1 << ", " << population[0]->w2 << '\n';
+        create_new_generation();
     }
     return 0;
 }
