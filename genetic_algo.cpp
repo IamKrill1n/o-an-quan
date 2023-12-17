@@ -98,10 +98,6 @@ Individual* crossover(Individual* parent1, Individual* parent2)
 void create_new_generation()
 {
     mt19937& rng = RandomGenerator().getRng();
-    // Sort the population by fitness
-    sort(population, population + POPULATION_SIZE);
-    cout << "Best fitness: " << population[0]->fitness << '\n';
-    cout << "Worst fitness: " << population[POPULATION_SIZE - 1]->fitness << '\n';
     // The bottom half of the population is replaced by the offspring of the top half
     for (int i = 0; i < POPULATION_SIZE / 2; i++)
     {
@@ -123,17 +119,17 @@ int main()
 {
     create_OG_population();
     int generation = 0;
-    while(1)
+    while(generation < 100)
     {
         generation++;
-        for(Individual* ind : population) //cout << ind->weights[0] << ' ' << ind->weights[1] << '\n';
-        {
-            ind->fitness = evaluate_fitness(ind->w1, ind->w2);
-        }
-        if (generation > 100) break;
+        cout << "Generation " << generation << '\n';
+        for(Individual* ind : population) ind->fitness = evaluate_fitness(ind->w1, ind->w2);
+        sort(population, population + POPULATION_SIZE);
+        cout << "Best fitness: " << population[0]->fitness << '\n';
+        cout << "Worst fitness: " << population[POPULATION_SIZE - 1]->fitness << '\n';
+        // if (generation > 100) break;
         create_new_generation();
-        cout << "Generation " << generation << ": " << population[0]->fitness << '\n';
     }
-    cout << "Best weights: " << population[0]->w1 << ' ' << population[0]->w2 << '\n';
+    // cout << "Best weights: " << population[0]->w1 << ' ' << population[0]->w2 << '\n';
     return 0;
 }
