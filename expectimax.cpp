@@ -15,7 +15,6 @@ public:
 		this->maxDepth = maxDepth_;
 	}
 
-
     Move calculate_move() override 
     {
         Move bestMove = {-1, -1};
@@ -51,9 +50,9 @@ private:
 	{
 		if (isEnd == 1) return INF - 1;
         else if (isEnd == 2) return -INF + 1;
-		return game.P1points - game.P2points;
+		return 120 * (game.P1points - game.P2points);
 	}
-	
+
     int expectimax(Game& game, int depth, bool isMaximizingPlayer, int agentId)
     {
     	int isEnd = game.check_ending();

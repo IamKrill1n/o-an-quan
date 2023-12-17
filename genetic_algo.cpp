@@ -1,7 +1,7 @@
 #include "game.cpp"
 #include "minimax.cpp"
 
-const int POPULATION_SIZE = 100;
+const int POPULATION_SIZE = 10;
 class RandomGenerator {
 public:
     RandomGenerator() : rng(chrono::steady_clock::now().time_since_epoch().count()) {}
@@ -16,10 +16,6 @@ struct Individual
     double w1, w2;
     int fitness;
     Individual(double w1, double w2) : w1(w1), w2(w2) {}
-    bool operator < (const Individual& other) const
-    {
-        return fitness > other.fitness;
-    }
     void set_state(double w1_, double w2_, int fitness_)
     {
         w1 = w1_;
@@ -35,13 +31,13 @@ int evaluate_fitness(const double w1, const double w2)
     cout << "Weights: " << w1 << ' ' << w2 << '\n';
     Game game;
     MinimaxStrategy minimax(&game);
-    minimax.set_maxDepth(5);
+    minimax.set_maxDepth(6);
     minimax.set_weights(w1, w2);
     Player p1;
     p1.set_strategy(&minimax);
     MinimaxStrategy minimax2(&game);
-    minimax2.set_maxDepth(5);
-    minimax2.set_weights(1.0, 0.0);
+    minimax2.set_maxDepth(6);
+    minimax2.set_weights(0.0, 0.0);
     Player p2;
     p2.set_strategy(&minimax2);
     int num_wins = 0;
@@ -53,10 +49,13 @@ int evaluate_fitness(const double w1, const double w2)
         {
             game.reset();
             game.make_move(firstMove);
+            int num_turns = 1;
             while(!game.check_ending())    
             {
+                if (num_turns > 100) break;
                 if (game.turn == ai_player) p1.play(); // AI player
                 else p2.play();
+                num_turns++;
             }
 
             if (game.check_ending() == ai_player + 1) num_wins++;
@@ -72,8 +71,8 @@ void create_OG_population()
     mt19937& rng = RandomGenerator().getRng();
     for (int i = 0; i < POPULATION_SIZE; i++)
     {
-        double w1 = uniform_real_distribution<double>(-0.5, 0.5)(rng);
-        double w2 = uniform_real_distribution<double>(-0.5, 0.5)(rng);
+        double w1 = uniform_real_distribution<double>(0, 0.5)(rng);
+        double w2 = uniform_real_distribution<double>(0, 1)(rng);
         // cout << "Weights: " << weights[0] << ' ' << weights[1] << '\n';
         population[i] = new Individual(w1, w2);
         // cout << "Individual " << i << ": " << population[i]->weights[0] << ' ' << population[i]->weights[1] << '\n';
@@ -84,8 +83,8 @@ Individual* mutate(Individual& child)
 {
     mt19937& rng = RandomGenerator().getRng();
     Individual* mutation = &child;
-    if (rng()%2) mutation->w1 = uniform_real_distribution<double>(-0.5, 0.5)(rng);
-    else mutation->w2 = uniform_real_distribution<double>(-0.5, 0.5)(rng);
+    if (rng()%2) mutation->w1 = uniform_real_distribution<double>(0, 0.5)(rng);
+    else mutation->w2 = uniform_real_distribution<double>(0, 1)(rng);
     return mutation;
 }
 
@@ -118,17 +117,18 @@ int main()
 {
     create_OG_population();
     int generation = 0;
-    while(generation < 100)
+    while(generation < 7)
     {
         generation++;
         cout << "Generation " << generation << '\n';
         for(Individual* ind : population) ind->fitness = evaluate_fitness(ind->w1, ind->w2);
-        sort(population, population + POPULATION_SIZE);
+        sort(population, population + POPULATION_SIZE, [](const Individual* a, const Individual* b) {return a->fitness > b->fitness;});
+        // for (int i = 0; i < POPULATION_SIZE; i++) cout << population[i]->fitness << ' ';
         cout << "Best fitness: " << population[0]->fitness << '\n';
         cout << "Worst fitness: " << population[POPULATION_SIZE - 1]->fitness << '\n';
         // if (generation > 100) break;
-        create_new_generation();
+        cout << "Best weights: " << population[0]->w1 << ' ' << population[0]->w2 << '\n';
+        if (generation < 7) create_new_generation();
     }
-    // cout << "Best weights: " << population[0]->w1 << ' ' << population[0]->w2 << '\n';
     return 0;
 }

@@ -18,7 +18,7 @@ int main()
     {
         MinimaxStrategy minimax(&game);
         minimax.set_maxDepth(depth);
-        minimax.set_weights({1, 0});
+        minimax.set_weights(0, 0);
         minimax.calculate_move().print();
     }
     // else if (strategy == "expectimax")

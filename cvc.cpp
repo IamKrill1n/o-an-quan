@@ -11,10 +11,12 @@ int main()
     // 1 7 0 0 0 0 0 1 0 0 0 0 0 3 0 0 0 0 0 1 0 0 0 0 0 0 3
     MinimaxStrategy minimax_bot1(&game);
     minimax_bot1.set_maxDepth(5);
-    minimax_bot1.set_gamma(0.0);
+    // minimax_bot1.set_weights(0.140251, -0.217708);
+    minimax_bot1.set_weights(0, 0);
+    // Human human(&game);
     MinimaxStrategy minimax_bot2(&game);
-    minimax_bot2.set_maxDepth(5);
-    minimax_bot2.set_gamma(-0.5);
+    minimax_bot2.set_maxDepth(7);
+    minimax_bot2.set_weights(0, 0);
     // ExpectimaxStrategy expectimax_bot(&game);
     // expectimax_bot.set_maxDepth(7);
     // expectimax_bot.set_utility(utility1);
@@ -34,7 +36,7 @@ int main()
         // cout << game.turn << '\n';
     }
     game.print_table();
-    cout << game.P1points - game.P2points << '\n';
+    // cout << game.P1points - game.P2points << '\n';
     // for (int d1 = 0; d1 <= 18; d1++)
     // for (int d2 = 0; d2 <= 18; d2++)
     // {
