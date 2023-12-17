@@ -29,19 +29,20 @@ public:
 	int P1points;
 	int P2points;
 	const int mandarinValue = 5;
-	Game(int turn_, vector<ar<int, 2> > state_, int P1points_, int P2points_)
-	{
-		turn = turn_;
-		// state = {{0, 1}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {0, 1}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {5, 0}};
-		state = state_; // {{7, 0}, {1, 0}, {2, 0}, {0, 0}, {7, 0}, {0, 0}, {4, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}};
-		P1points = P1points_;
-		P2points = P2points_;
-		/*
-			11	10	9	8	7
-		0						6
-			1	2 	3	4	5
-		*/
-	}
+	Game() {}
+	// Game(int turn_, vector<ar<int, 2> > state_, int P1points_, int P2points_)
+	// {
+	// 	turn = turn_;
+	// 	// state = {{0, 1}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {0, 1}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {5, 0}};
+	// 	state = state_; // {{7, 0}, {1, 0}, {2, 0}, {0, 0}, {7, 0}, {0, 0}, {4, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}};
+	// 	P1points = P1points_;
+	// 	P2points = P2points_;
+	// 	/*
+	// 		11	10	9	8	7
+	// 	0						6
+	// 		1	2 	3	4	5
+	// 	*/
+	// }
 
 	void set_state(int turn_, vector<ar<int, 2> > state_, int P1points_, int P2points_)
 	{
@@ -50,7 +51,15 @@ public:
 		P1points = P1points_;
 		P2points = P2points_;
 	}
-
+	
+	void reset()
+	{
+		turn = 0;
+		state = {{0, 1}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {0, 1}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {5, 0}};
+		P1points = 0;
+		P2points = 0;
+	}
+	
 	void check_borrow()
 	{
 		if (turn == 0)
@@ -119,8 +128,8 @@ public:
 			else if (P1points < P2points) return 2; // player 2 wins
 			else return 3; // draw
 		}
-		if (P1points < 0 && -P1points > 50) return 2; // player 1 borrow more than 50 rocks then player 2 wins
-		if (P2points < 0 && -P2points > 50) return 1; // player 2 borrow more than 50 rocks then player 1 wins
+		if (P1points < -50) return 2; // player 1 borrow more than 50 rocks then player 2 wins
+		if (P2points < -50) return 1; // player 2 borrow more than 50 rocks then player 1 wins
 		return 0; // game not end
 	}
 
@@ -188,7 +197,7 @@ public:
     void execute_move()
     {
 		Move move = calculate_move();
-		move.print();
+		// move.print();
     	game->make_move(move);
     }
 };

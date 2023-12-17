@@ -1,23 +1,27 @@
 #include "minimax.cpp"
 #include "expectimax.cpp"
 #include "human.cpp"
-#include "utility.cpp"
+// #include "utility.cpp"
 
 int ans[24][24]; // ans[i][j] = 1 if i wins j, 2 if i loses to j, 3 if draw
 int main()
 {    
-	Game game(0, {{0, 1}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {0, 1}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {5, 0}}, 0, 0);
+    Game game;
+	game.set_state(0, {{0, 1}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {0, 1}, {5, 0}, {5, 0}, {5, 0}, {5, 0}, {5, 0}}, 0, 0);
     // 1 7 0 0 0 0 0 1 0 0 0 0 0 3 0 0 0 0 0 1 0 0 0 0 0 0 3
-    MinimaxStrategy minimax_bots(&game);
-    minimax_bots.set_maxDepth(8);
-    minimax_bots.set_utility(utility1);
-    ExpectimaxStrategy expectimax_bots(&game);
-    expectimax_bots.set_maxDepth(5);
-    expectimax_bots.set_utility(utility1);
+    MinimaxStrategy minimax_bot1(&game);
+    minimax_bot1.set_maxDepth(5);
+    minimax_bot1.set_gamma(0.0);
+    MinimaxStrategy minimax_bot2(&game);
+    minimax_bot2.set_maxDepth(5);
+    minimax_bot2.set_gamma(-0.5);
+    // ExpectimaxStrategy expectimax_bot(&game);
+    // expectimax_bot.set_maxDepth(7);
+    // expectimax_bot.set_utility(utility1);
     Player p1;
     Player p2;
-    p1.set_strategy(&expectimax_bots);
-    p2.set_strategy(&minimax_bots);
+    p1.set_strategy(&minimax_bot1);
+    p2.set_strategy(&minimax_bot2);
     while(!game.check_ending())
     {
         // game.check_borrow(game.turn);
@@ -30,6 +34,7 @@ int main()
         // cout << game.turn << '\n';
     }
     game.print_table();
+    cout << game.P1points - game.P2points << '\n';
     // for (int d1 = 0; d1 <= 18; d1++)
     // for (int d2 = 0; d2 <= 18; d2++)
     // {
@@ -77,5 +82,5 @@ int main()
     //     for (int j = 0; j <= 18; j++) cout << ans[i + 11][j] << ',';
     //     cout << '\n';
     // }
-    // return 0;
+    return 0;
 }

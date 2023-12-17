@@ -3,13 +3,12 @@
 
 #include "game.cpp"
 
-typedef function<int(Game&, int)> UtilityFunc;
 
 class MinimaxStrategy : public Strategy {
 public:
-	const int INF = 7777777;
+	const double INF = 7777777;
 	int maxDepth;
-    UtilityFunc utility;
+    double gamma;
     MinimaxStrategy(Game* game) : Strategy(game){};
 
     void set_maxDepth(int maxDepth_)
@@ -17,16 +16,16 @@ public:
     	this->maxDepth = maxDepth_;
     }
 
-    void set_utility(UtilityFunc utility_)
+    void set_gamma(double gamma_)
     {
-    	this->utility = utility_;
+        this->gamma = gamma_;
     }
 
     Move calculate_move() override 
     {
         Move bestMove = {-1, -1};
-        int bestValue = (game->turn == 0) ? -INF : INF; 
-        int alpha = -INF, beta = INF;
+        double bestValue = (game->turn == 0) ? -INF : INF; 
+        double alpha = -INF, beta = INF;
         // cout << "CALCULATION: \n";
         // cout << "bestValue = " << bestValue << '\n';
         int isMaximizingPlayer = !(game->turn);
@@ -35,7 +34,7 @@ public:
             Game tempGame = *game;
             tempGame.make_move(move);
             // move.print();
-            int moveValue = minimax(tempGame, 0, !isMaximizingPlayer, alpha, beta, utility);
+            double moveValue = minimax(tempGame, 0, !isMaximizingPlayer, alpha, beta);
             // cout << "Move value = " << moveValue << '\n';
             if (optimize(bestValue, moveValue, isMaximizingPlayer)) bestMove = move;
             if (isMaximizingPlayer) alpha = max(alpha, moveValue);
@@ -48,7 +47,7 @@ public:
     }
 
 private:
-	bool optimize(int& best, int value, bool isMaximizingPlayer)
+	bool optimize(double& best, double value, bool isMaximizingPlayer)
     {
     	if (isMaximizingPlayer) // if maximize player
     	{
@@ -58,12 +57,23 @@ private:
     	return 0;
     }
 
-    int minimax(Game& game, int depth, bool isMaximizingPlayer, int alpha, int beta, UtilityFunc utility)
+    double utility(Game& game, int isEnd)
+    {
+        if (isEnd == 1) return INF - 1;
+        else if (isEnd == 2) return -INF + 1;
+        int p1_stones = 0, p2_stones = 0;
+        for (int cell = 1; cell < 6; cell++) p1_stones += game.state[cell][0];
+    	for (int cell = 7; cell < 12; cell++) p2_stones += game.state[cell][0];
+
+        return game.P1points - game.P2points + gamma * (p1_stones - p2_stones);
+    }
+
+    double minimax(Game& game, int depth, bool isMaximizingPlayer, double alpha, double beta)
     {
     	int isEnd = game.check_ending();
         if (isEnd || depth == maxDepth) return utility(game, isEnd);
              
-        int bestValue = isMaximizingPlayer ? -INF : INF;  
+        double bestValue = isMaximizingPlayer ? -INF : INF;  
         // Move bestMove = {-1, -1};
         
         for (Move move : game.possible_move()) 
@@ -73,7 +83,7 @@ private:
             // cout << "P1 move: ";
             // move.print();
             // tempGame.print_table();
-            int moveValue = minimax(tempGame, depth + 1, !isMaximizingPlayer, alpha, beta, utility);
+            double moveValue = minimax(tempGame, depth + 1, !isMaximizingPlayer, alpha, beta);
             // cout << moveValue << endl;
             optimize(bestValue, moveValue, isMaximizingPlayer);
             
