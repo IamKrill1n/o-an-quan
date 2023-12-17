@@ -1,13 +1,13 @@
 #include "game.cpp"
 #include "minimax.cpp"
 
-int eval1(const double w1, const double w2)
+int eval1(int depth, const double w1, const double w2)
 {    
     // Set the weights in the evaluation function
 	cout << "Weights: " << w1 << ", " << w2 << '\n';
     Game game;
     MinimaxStrategy minimax(&game);
-    minimax.set_maxDepth(5);
+    minimax.set_maxDepth(depth);
     minimax.set_weights(w1, w2);
     Player p1;
     p1.set_strategy(&minimax);
@@ -62,13 +62,13 @@ int eval1(const double w1, const double w2)
     return num_wins;
 }
 
-int eval2(const double w1, const double w2)
+int eval2(int depth_, const double w1, const double w2)
 {    
     // Set the weights in the evaluation function
 	cout << "Weights: " << w1 << ", " << w2 << '\n';
     Game game;
     MinimaxStrategy minimax(&game);
-    minimax.set_maxDepth(5);
+    minimax.set_maxDepth(depth_);
     minimax.set_weights(w1, w2);
     Player p1;
     p1.set_strategy(&minimax);
@@ -123,8 +123,8 @@ int main()
 {
     // eval1(0.312809, 0.594678);
     // eval2(0.312809, 0.594678);
-    eval1(0.34908, 0.665755);
-    eval2(0.34908, 0.665755);
+    // eval1(0.34908, 0.665755);
+    eval2(9, 0, 0);
     // cout << eval1(0, 0) << '\n';
     // cout << eval2(0, 0);
 }
