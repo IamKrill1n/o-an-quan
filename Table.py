@@ -18,6 +18,7 @@ class Table:
         self.picking = -1
         self.empty_rows = [0, 0]
         self.player_point = [0, 0]
+        self.on_hand = 0
 
     def render(self, turn, method = None, val = 0):  
         screen.fill((255, 255, 255))
@@ -82,6 +83,9 @@ class Table:
             draw_text('Player 1 point:' + str(self.player_point[0]), 0, HEIGHT - 40, font, 'white')
             draw_text('Player 2 point:' + str(self.player_point[1]), 0, 0, font, 'white')
 
+            #drawing if holding stone
+            if self.on_hand > 0:
+                draw_text('On hand: ' + str(self.on_hand), 100, HEIGHT / 2 - 175, font, 'white')
             #drawing if eating
             if method == 'eating':
                 text = '+' + str(val)
@@ -105,12 +109,15 @@ class Table:
     def update(self, player, cell, direction, turn): #ccw 1, cw 0
         self.selection, self.picking = cell, cell
         quan, self.table[self.selection][0] = self.table[self.selection][0], 0
+        self.on_hand = quan
+
         self.blink(turn)
         while(quan != 0):
             for i in range(quan):
                 self.picking = get_nxt(self.picking, direction)
                 self.table[self.picking][0] += 1
-
+                self.on_hand -= 1
+                
                 self.blink(turn, 'adding')
             self.picking = get_nxt(self.picking, direction)
 
@@ -132,7 +139,9 @@ class Table:
             elif self.table[self.picking][0] != 0:
                 val = self.table[self.picking][0]
                 quan, self.table[self.picking][0] = self.table[self.picking][0], 0
+                self.on_hand = quan
                 self.blink(turn, 'taking', val)
+
         self.picking = -1
         self.selection = -1
         for i in range(2):

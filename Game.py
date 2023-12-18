@@ -1,5 +1,6 @@
 from subprocess import Popen, PIPE
 import random 
+import time
 from Table import *
 def get_coord(x, y):
     sol = (y - (HEIGHT/2 - 100)) // 100 * 5
@@ -71,12 +72,15 @@ class Game:
 
     def make_AI_move(self, strategy, program_path = "main.exe", depth = 7, utility = 1): #print cell and direction
         playerID = self.turn_step//2
-
+        
         if strategy == 'minimax' or strategy == 'expectimax':  
             p = Popen([program_path], stdout=PIPE, stdin=PIPE, stderr=PIPE)
             data_to_write = str(self.turn_step//2) + ' ' + (' '.join(' '.join(str(self.state.table[i][j]) for j in range(2)) for i in range(12)) + ' ' + str(self.state.player_point[0]) + ' ' + str(self.state.player_point[1]))
-            data_to_write = data_to_write + ' ' + strategy + ' ' + str(depth) + ' '+ str(utility)
+            data_to_write = data_to_write + ' ' + strategy + ' ' + str(depth) #+ ' '+ str(utility)
+            start_time = time.time()
             stdout_data = p.communicate(input=data_to_write.encode())[0].decode()
+            end_time = time.time()
+            print('Time:', end_time-start_time)
             AI_move = list(map(int, stdout_data.split()))
 
         elif strategy == 'random':
