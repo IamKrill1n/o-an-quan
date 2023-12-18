@@ -8,7 +8,7 @@ AI_turn = 1
 AI_test = 0
 
 playState = Game()
-pygame.display.set_caption('oanquantet')
+pygame.display.set_caption('O An Quan')
 #ccw 1, cw 0
 # program_path_1 = "main.exe"
 # program_path_2 = "main.exe"
@@ -36,7 +36,7 @@ while run:
             if playState.turn_step == 0:
                 playState.make_AI_move(strategy_1, depth=7)
             elif playState.turn_step == 2:
-                playState.make_AI_move(strategy_2, depth=3)
+                playState.make_AI_move(strategy_2, depth=7)
         elif AI_turn and playState.turn_step == 2:
             playState.make_AI_move(strategy_1, depth = 7)
         else:

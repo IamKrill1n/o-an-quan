@@ -4,7 +4,6 @@ import math
 from variables import *
 def get_nxt(i, direction):
     return (i + (1 if direction else -1)) % 12
-assets = 'assets'
 background = pygame.image.load(os.path.join(assets, 'background.png'))
 def draw_text(text, x, y, font, color):
     text_surface = font.render(text, True, color)
@@ -80,12 +79,12 @@ class Table:
 
 
             #drawing player point
-            draw_text('Player 1 point:' + str(self.player_point[0]), 0, HEIGHT - 40, font, 'white')
-            draw_text('Player 2 point:' + str(self.player_point[1]), 0, 0, font, 'white')
+            draw_text('Player 1 point: ' + str(self.player_point[0]), 0, HEIGHT - 40, font, 'white')
+            draw_text('Player 2 point: ' + str(self.player_point[1]), 0, 0, font, 'white')
 
             #drawing if holding stone
-            if self.on_hand > 0:
-                draw_text('On hand: ' + str(self.on_hand), 100, HEIGHT / 2 - 175, font, 'white')
+            # if self.on_hand > 0:
+            draw_text('On hand: ' + str(self.on_hand), 100, HEIGHT / 2 - 175, font, 'white')
             #drawing if eating
             if method == 'eating':
                 text = '+' + str(val)

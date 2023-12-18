@@ -51,6 +51,7 @@ class Game:
             #for player 2, going left is ccw, right is cw   
             direction = (playerID + (event == pygame.K_RIGHT)) % 2
             self.state.update(playerID, cell, direction, self.turn_step)
+            print('Player: ' + str(cell) + ' ' + str(direction))
             self.turn_step = (self.turn_step + 1) % 4
         
     def fix_empty_rows(self):
@@ -87,7 +88,7 @@ class Game:
             AI_move = getRandom(playerID, self.state.table)
 
     
-        print(AI_move)
+        print('AI: ', AI_move)
         self.state.update(self.turn_step//2, AI_move[0], AI_move[1], self.turn_step)
         # print(self.state)
         self.turn_step = (self.turn_step + 2) % 4
