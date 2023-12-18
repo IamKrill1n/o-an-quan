@@ -20,16 +20,10 @@ int main()
         minimax.set_weights(0, 0);
         minimax.calculate_move().print();
     }
-    // else if (strategy == "expectimax")
-    // {
-    //     ExpectimaxStrategy expectimax(&game);
-    //     expectimax.set_maxDepth(depth);
-    //     if (utility == 1) expectimax.set_utility(utility1);
-    //     else expectimax.set_utility(utility2);
-    //     expectimax.calculate_move().print();
-    // }
-    // MinimaxStrategy minimax10(&game, 5);
-    // ExpectimaxStrategy expectimax2(&game, 6);
-    // ExpectimaxStrategy expectimax1(&game, 7);
-    // Human human(&game);
+    else if (strategy == "expectimax")
+    {
+        ExpectimaxStrategy expectimax(&game);
+        expectimax.set_maxDepth(depth);
+        expectimax.calculate_move().print();
+    }
 }
