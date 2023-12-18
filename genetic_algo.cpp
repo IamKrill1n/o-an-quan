@@ -91,8 +91,10 @@ Individual* mutate(Individual& child)
 Individual* crossover(Individual* parent1, Individual* parent2)
 {
     mt19937& rng = RandomGenerator().getRng();
-    return new Individual(uniform_real_distribution<double>(parent1->w1, parent2->w1)(rng), 
-                          uniform_real_distribution<double>(parent1->w2, parent2->w2)(rng));
+    return new Individual(uniform_real_distribution<double>(min(parent1->w1, parent2->w1), 
+                                                            max(parent1->w1, parent2->w1))(rng), 
+                          uniform_real_distribution<double>(min(parent1->w2, parent2->w2), 
+                                                            max(parent1->w2, parent2->w2))(rng));
 }
 
 void create_new_generation()
@@ -118,7 +120,7 @@ void create_new_generation()
 int main()
 {
     create_OG_population();
-    for (int generation = 1; generation < 10; generation++)
+    for (int generation = 1; generation <= 10; generation++)
     {
         cout << "Generation " << generation << '\n';
         for(Individual* ind : population) ind->fitness = evaluate_fitness(ind->w1, ind->w2);
