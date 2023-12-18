@@ -69,7 +69,7 @@ class Game:
             return True
         return False
 
-    def make_AI_move(self, strategy, program_path = "main.exe", depth = 5): #print cell and direction
+    def make_AI_move(self, strategy = 'minimax', program_path = "main.exe", depth = 5): #print cell and direction
         playerID = self.turn_step//2
 
         if strategy == 'minimax' or strategy == 'expectimax':  
