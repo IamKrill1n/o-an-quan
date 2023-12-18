@@ -34,9 +34,9 @@ while run:
         playState.fix_empty_rows()
         if AI_test:
             if playState.turn_step == 0:
-                playState.make_AI_move(strategy_1, depth=7, utility=2)
+                playState.make_AI_move(strategy_1, depth=7)
             elif playState.turn_step == 2:
-                playState.make_AI_move(strategy_2, depth=3, utility=1)
+                playState.make_AI_move(strategy_2, depth=3)
         elif AI_turn and playState.turn_step == 2:
             playState.make_AI_move(strategy_1, depth = 7)
         else:
