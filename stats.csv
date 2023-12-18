@@ -1,0 +1,23 @@
+"                P2 strats
+
+
+P1 strats",Minimax depth 0,Minimax depth 1,Minimax depth 2,Minimax depth 3,Minimax depth 4,Minimax depth 5,Minimax depth 6,Minimax depth 7,Minimax depth 8,Minimax depth 9,Minimax depth 10,Expectimax depth 0,Expectimax depth 1,Expectimax depth 2,Expectimax depth 3,Expectimax depth 4,Expectimax depth 5,Expectimax depth 6,Expectimax depth 7
+Minimax depth 0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,2,2
+Minimax depth 1,1,1,1,1,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1
+Minimax depth 2,1,1,1,1,2,3,1,3,1,3,3,1,1,1,1,1,1,1,1
+Minimax depth 3,1,1,1,2,1,2,1,2,2,2,2,1,1,1,1,1,1,1,1
+Minimax depth 4,1,1,1,1,1,2,2,2,2,2,2,1,1,1,1,1,1,1,1
+Minimax depth 5,1,1,1,1,1,3,2,2,2,2,2,1,1,1,1,1,1,1,1
+Minimax depth 6,1,1,1,1,1,3,0,3,3,1,3,1,1,1,1,1,1,1,1
+Minimax depth 7,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1
+Minimax depth 8,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+Minimax depth 9,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+Minimax depth 10,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+Expectimax depth 0,1,0,1,2,0,2,2,2,2,2,2,1,0,1,1,1,1,1,1
+Expectimax depth 1,1,1,2,2,2,2,2,2,2,2,2,1,2,1,1,0,0,0,0
+Expectimax depth 2,1,1,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2,0
+Expectimax depth 3,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,0,0
+Expectimax depth 4,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,0,0
+Expectimax depth 5,1,1,2,1,1,1,1,2,2,2,2,1,1,1,1,1,1,1,1
+Expectimax depth 6,1,1,1,1,1,1,1,2,2,2,2,1,1,1,1,1,1,1,1
+Expectimax depth 7,1,1,1,1,1,1,1,2,2,2,2,1,1,1,1,1,1,1,1

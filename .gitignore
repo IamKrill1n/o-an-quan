@@ -1,5 +1,4 @@
 /__pycache__
-/o-an-quan
 *.json
 *.exe
 !main.exe
