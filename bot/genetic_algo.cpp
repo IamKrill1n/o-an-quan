@@ -14,7 +14,7 @@ private:
 struct Individual
 {   
     double w1, w2;
-    int fitness;
+    double fitness;
     Individual(double w1, double w2) : w1(w1), w2(w2) {}
     void set_state(double w1_, double w2_, int fitness_)
     {
@@ -25,7 +25,7 @@ struct Individual
 };
 Individual* population[POPULATION_SIZE];
 
-int evaluate_fitness(const double w1, const double w2)
+double evaluate_fitness(const double w1, const double w2)
 {    
     // Set the weights in the evaluation function
     cout << "Weights: " << w1 << ' ' << w2 << '\n';
@@ -40,7 +40,7 @@ int evaluate_fitness(const double w1, const double w2)
     minimax2.set_weights(0.0, 0.0);
     Player p2;
     p2.set_strategy(&minimax2);
-    int num_wins = 0;
+    int num_wins = 0, num_games = 0;
     game.reset();
     vector<Move> openingMoves = game.possible_move();
     for (int ai_player = 0; ai_player < 2; ai_player++)
@@ -59,11 +59,12 @@ int evaluate_fitness(const double w1, const double w2)
             }
 
             if (game.check_ending() == ai_player + 1) num_wins++;
+            num_games++;
         }
     }
 
     // The fitness is the win rate
-    return num_wins;
+    return (num_wins * 1.0) / num_games;
 }
 void create_OG_population()
 {
@@ -114,7 +115,7 @@ void create_new_generation()
         while (parent2 == parent1) parent2 = uniform_int_distribution<int>(0, POPULATION_SIZE / 2 - 1)(rng);
 
         // Crossover and mutation
-        Individual* child1 = crossover2(population[parent1], population[parent2]);
+        Individual* child1 = crossover1(population[parent1], population[parent2]);
         int mutation = uniform_int_distribution<int>(1, 10)(rng);
         if (mutation <= 2) child1 = mutate(*child1);
         // Replace an individual from the bottom half of the population with the new child
@@ -125,7 +126,7 @@ void create_new_generation()
 int main()
 {
     create_OG_population();
-    for (int generation = 1; generation <= 10; generation++)
+    for (int generation = 1; generation <= 15; generation++)
     {
         cout << "Generation " << generation << '\n';
         for(Individual* ind : population) ind->fitness = evaluate_fitness(ind->w1, ind->w2);
