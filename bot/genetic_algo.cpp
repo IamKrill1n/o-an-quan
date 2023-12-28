@@ -88,7 +88,12 @@ Individual* mutate(Individual& child)
     return mutation;
 }
 
-Individual* crossover(Individual* parent1, Individual* parent2)
+Individual* crossover1(Individual* parent1, Individual* parent2)
+{
+    return new Individual(parent1->w1, parent2->w2);
+}
+
+Individual* crossover2(Individual* parent1, Individual* parent2)
 {
     mt19937& rng = RandomGenerator().getRng();
     return new Individual(uniform_real_distribution<double>(min(parent1->w1, parent2->w1), 
@@ -109,7 +114,7 @@ void create_new_generation()
         while (parent2 == parent1) parent2 = uniform_int_distribution<int>(0, POPULATION_SIZE / 2 - 1)(rng);
 
         // Crossover and mutation
-        Individual* child1 = crossover(population[parent1], population[parent2]);
+        Individual* child1 = crossover2(population[parent1], population[parent2]);
         int mutation = uniform_int_distribution<int>(1, 10)(rng);
         if (mutation <= 2) child1 = mutate(*child1);
         // Replace an individual from the bottom half of the population with the new child
