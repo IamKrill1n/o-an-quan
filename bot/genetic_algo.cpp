@@ -212,17 +212,17 @@ void tournament_arc()
 
 int main()
 {
-    // GA();
-    round2_population[0] = new Individual(0.433064, 0.588927);
-    round2_population[1] = new Individual(0.372005, 0.66842);
-    round2_population[2] = new Individual(0.347153, 0.695459);
-    round2_population[3] = new Individual(0.391176, 0.650489);
-    round2_population[4] = new Individual(0.4194, 0.667149);
-    round2_population[5] = new Individual(0.44585, 0.60462);
-    round2_population[6] = new Individual(0.350393, 0.707576);
-    round2_population[7] = new Individual(0.350553, 0.696475);
-    round2_population[8] = new Individual(0.382359, 0.685102);
-    round2_population[9] = new Individual(0.406681, 0.66417);
+    GA();
+    // round2_population[0] = new Individual(0.433064, 0.588927);
+    // round2_population[1] = new Individual(0.372005, 0.66842);
+    // round2_population[2] = new Individual(0.347153, 0.695459);
+    // round2_population[3] = new Individual(0.391176, 0.650489);
+    // round2_population[4] = new Individual(0.4194, 0.667149);
+    // round2_population[5] = new Individual(0.44585, 0.60462);
+    // round2_population[6] = new Individual(0.350393, 0.707576);
+    // round2_population[7] = new Individual(0.350553, 0.696475);
+    // round2_population[8] = new Individual(0.382359, 0.685102);
+    // round2_population[9] = new Individual(0.406681, 0.66417);
     tournament_arc();
     return 0;
 }

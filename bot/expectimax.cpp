@@ -19,15 +19,12 @@ public:
     {
         Move bestMove = {-1, -1};
         int bestValue = (game->turn == 0) ? -INF : INF; 
-        // cout << "CALCULATION: \n";
-        // cout << "bestValue = " << bestValue << '\n';
         int isMaximizingPlayer = !(game->turn);
         for (Move move : game->possible_move()) 
         {
             Game tempGame = *game;
             tempGame.make_move(move);
             int moveValue = expectimax(tempGame, 0, !isMaximizingPlayer, game->turn);
-            // cout << moveValue << '\n';
             if (optimize(bestValue, moveValue, isMaximizingPlayer)) bestMove = move;
         }
         // cout << "MOVE PLAYED: ";
@@ -67,9 +64,6 @@ private:
 		   	{
 		        Game tempGame = game;
 		        tempGame.make_move(move);     
-		        // cout << "P1 move: ";
-		        // move.print();
-		        // tempGame.print_table();
 		        int moveValue = expectimax(tempGame, depth + 1, !isMaximizingPlayer, agentId);
 		        optimize(bestValue, moveValue, isMaximizingPlayer);
 			}
